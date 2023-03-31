@@ -72,7 +72,7 @@ public class Consola {
 
 		System.out.println(mensaje);
 		fecha = Entrada.cadena();
-	
+
 		while (!fecha.matches(PATRON_FECHA)) {
 			System.out.println("Fecha incorrecta, vuelva a introducirla: ");
 			fecha = Entrada.cadena();
@@ -122,55 +122,26 @@ public class Consola {
 	}
 
 	public static Vehiculo leerVehiculo() {
-
-		int cilindrada, plazas, pma;
-		String marca, modelo, matricula;
-
 		mostrarMenuTipoVehiculo();
-		Vehiculo vehiculo = leerVehiculo(elegirTipoVehiculo());
-		Vehiculo vehiculoInsertar = null;
-
-		if (TipoVehiculo.get(vehiculo).equals(TipoVehiculo.TURISMO)) {
-			marca = leerCadena("\nIntroduzca marca de turismo: ");
-			modelo = leerCadena("Introduzca modelo de turismo: ");
-			matricula = leerCadena("Introduzca matricula de turismo: ");
-			cilindrada = leerEntero("Introduzca cilindrada de turismo: ");
-
-			vehiculoInsertar = new Turismo(marca, modelo, matricula, cilindrada);
-		}
-		if (TipoVehiculo.get(vehiculo).equals(TipoVehiculo.FURGONETA)) {
-			marca = leerCadena("\nIntroduzca marca de la furgoneta: ");
-			modelo = leerCadena("Introduzca modelo de la furgoneta: ");
-			matricula = leerCadena("Introduzca matricula de la furgoneta: ");
-			pma = leerEntero("Introduzca masa máxima autorizada de la furgoneta: ");
-			plazas = leerEntero("Introduzca plazass de la furgoneta: ");
-
-			vehiculoInsertar = new Furgoneta(marca, modelo, pma, plazas, matricula);
-		}
-		if (TipoVehiculo.get(vehiculo).equals(TipoVehiculo.AUTOBUS)) {
-			marca = leerCadena("\nIntroduzca marca del autobus: ");
-			modelo = leerCadena("Introduzca modelo del autobus: ");
-			matricula = leerCadena("Introduzca matricula del autobus: ");
-			plazas = leerEntero("Introduzca plazass del autobus: ");
-
-			vehiculoInsertar = new Autobus(marca, modelo, matricula, plazas);
-		}
-		return vehiculoInsertar;
+		return leerVehiculo(elegirTipoVehiculo());
 	}
 
 	private static void mostrarMenuTipoVehiculo() {
+		TipoVehiculo[] tipoVehiculos = TipoVehiculo.values();
 		System.out.println("---------------------");
 		System.out.println("ELEGIR TIPO VEHICULO ");
 		System.out.println("---------------------");
-		System.out.println("0. Turimos.");
-		System.out.println("1. Autobus.");
-		System.out.println("2. Furgoneta.\n");
+
+		for (int i = 0; i < tipoVehiculos.length; i++) {
+			System.out.println(i + ".- " + tipoVehiculos[i].toString());
+		}
 	}
 
 	private static TipoVehiculo elegirTipoVehiculo() {
 		boolean comprobador = false;
 		TipoVehiculo tipoVehiculo = null;
 		int ordinal = leerEntero("Elija un tipo de vehiculo: ");
+
 		while (comprobador == false) {
 			try {
 				tipoVehiculo = TipoVehiculo.get(ordinal);
@@ -184,17 +155,38 @@ public class Consola {
 	}
 
 	private static Vehiculo leerVehiculo(TipoVehiculo tipoVehiculo) {
+		int cilindrada, plazas, pma;
+		String marca, modelo, matricula;
 		Vehiculo vehiculo = null;
+
 		switch (tipoVehiculo) {
-		case TURISMO:
-			vehiculo = new Turismo("Ford", "Mondeo", "1111JJJ", 11);
-			break;
-		case AUTOBUS:
-			vehiculo = new Autobus("Ford", "Mondeo", "1111JJJ", 30);
-			break;
-		case FURGONETA:
-			vehiculo = new Furgoneta("Ford", "Mondeo", 7, 100, "1111JJJ");
-			break;
+			case TURISMO:
+				marca = leerCadena("\nIntroduzca marca de turismo: ");
+				modelo = leerCadena("Introduzca modelo de turismo: ");
+				matricula = leerCadena("Introduzca matricula de turismo: ");
+				cilindrada = leerEntero("Introduzca cilindrada de turismo: ");
+
+				vehiculo = new Turismo(marca, modelo, matricula, cilindrada);
+				break;
+
+			case AUTOBUS:
+				marca = leerCadena("\nIntroduzca marca del autobus: ");
+				modelo = leerCadena("Introduzca modelo del autobus: ");
+				matricula = leerCadena("Introduzca matricula del autobus: ");
+				plazas = leerEntero("Introduzca plazass del autobus: ");
+
+				new Autobus(marca, modelo, matricula, plazas);
+				break;
+
+			case FURGONETA:
+				marca = leerCadena("\nIntroduzca marca de la furgoneta: ");
+				modelo = leerCadena("Introduzca modelo de la furgoneta: ");
+				matricula = leerCadena("Introduzca matricula de la furgoneta: ");
+				pma = leerEntero("Introduzca masa máxima autorizada de la furgoneta: ");
+				plazas = leerEntero("Introduzca plazass de la furgoneta: ");
+
+				vehiculo = new Furgoneta(marca, modelo, pma, plazas, matricula);
+				break;
 		}
 		return vehiculo;
 

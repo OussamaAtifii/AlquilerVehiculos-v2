@@ -12,17 +12,14 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Furgoneta;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Vehiculo;
-import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IAlquileres;
-import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IClientes;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IFuenteDatos;
-import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IVehiculos;
 
 public class ModeloCascada extends Modelo {
-	private IClientes clientes;
-	private IVehiculos vehiculos;
-	private IAlquileres alquileres;
 
 	public ModeloCascada(IFuenteDatos fuenteDatos) {
+		if (fuenteDatos == null) {
+			throw new NullPointerException("ERROR: La fuente de datos no puede ser nula.");
+		}
 		clientes = fuenteDatos.crearClientes();
 		vehiculos = fuenteDatos.crearVehiculos();
 		alquileres = fuenteDatos.crearAlquileres();

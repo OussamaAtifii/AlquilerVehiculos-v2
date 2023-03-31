@@ -19,6 +19,9 @@ public class Turismo extends Vehiculo {
 	}
 
 	private void setCilindrada(int cilindrada) {
+		if (cilindrada <= 0){
+			throw new IllegalArgumentException("ERROR: La cilindrada no puede ser 0 o negativa");
+		}
 		this.cilindrada = cilindrada;
 	}
 

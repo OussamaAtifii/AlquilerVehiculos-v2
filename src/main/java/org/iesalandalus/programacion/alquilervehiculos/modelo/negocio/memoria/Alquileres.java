@@ -54,11 +54,6 @@ public class Alquileres implements IAlquileres {
 	}
 
 	@Override
-	public int getCantidad() {
-		return coleccionAlquileres.size();
-	}
-
-	@Override
 	public void insertar(Alquiler alquiler) throws OperationNotSupportedException {
 		if (alquiler == null) {
 			throw new NullPointerException("ERROR: No se puede insertar un alquiler nulo.");
@@ -68,18 +63,58 @@ public class Alquileres implements IAlquileres {
 		coleccionAlquileres.add(alquiler);
 	}
 
+	private Alquiler getAlquilerAbierto(Cliente cliente) {
+		Alquiler alquilerAbierto = null;
+		for (Alquiler alquiler : get(cliente)) {
+			if (alquiler.getFechaDevolucion() == null) {
+				alquilerAbierto = alquiler;
+			}
+		}
+		return alquilerAbierto;
+	}
+
 	@Override
-	public void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException {
-		if (alquiler == null) {
+	public void devolver(Cliente cliente, LocalDate fechaDevolucion) throws OperationNotSupportedException {
+		Alquiler alquilerAbierto = getAlquilerAbierto(cliente);
+
+		if (cliente == null) {
 			throw new NullPointerException("ERROR: No se puede devolver un alquiler nulo.");
 		}
 		if (fechaDevolucion == null) {
 			throw new NullPointerException("ERROR: La fecha de devolución no puede ser nula.");
 		}
-		if (!coleccionAlquileres.contains(alquiler)) {
-			throw new OperationNotSupportedException("ERROR: No existe ningún alquiler igual.");
+		if (alquilerAbierto == null) {
+			throw new IllegalArgumentException("ERROR: No existe ningun alquiler abierto para el cliente introducido");
 		}
-		alquiler.devolver(fechaDevolucion);
+		alquilerAbierto.devolver(fechaDevolucion);
+
+	}
+
+	private Alquiler getAlquilerAbierto(Vehiculo vehiculo) {
+		Alquiler alquilerAbierto = null;
+		for (Alquiler alquiler : get(vehiculo)) {
+			if (alquiler.getFechaDevolucion() == null) {
+				alquilerAbierto = alquiler;
+				break;
+			}
+		}
+		return alquilerAbierto;
+	}
+
+	@Override
+	public void devolver(Vehiculo vehiculo, LocalDate fechaDevolucion) throws OperationNotSupportedException {
+		Alquiler alquilerAbierto = getAlquilerAbierto(vehiculo);
+
+		if (vehiculo == null) {
+			throw new NullPointerException("ERROR: No se puede devolver un alquiler nulo.");
+		}
+		if (fechaDevolucion == null) {
+			throw new NullPointerException("ERROR: La fecha de devolución no puede ser nula.");
+		}
+		if (alquilerAbierto == null) {
+			throw new IllegalArgumentException("ERROR: No existe ningun alquiler abierto para el vehiculo introducido");
+		}
+		alquilerAbierto.devolver(fechaDevolucion);
 
 	}
 
@@ -138,6 +173,12 @@ public class Alquileres implements IAlquileres {
 				}
 			}
 		}
+	}
+
+	public void comenzar() {
+	}
+
+	public void terminar() {	
 	}
 
 }

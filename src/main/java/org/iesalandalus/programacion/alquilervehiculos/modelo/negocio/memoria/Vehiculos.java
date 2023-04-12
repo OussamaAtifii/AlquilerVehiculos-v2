@@ -21,11 +21,6 @@ public class Vehiculos implements IVehiculos {
 	}
 
 	@Override
-	public int getCantidad() {
-		return coleccionVehiculos.size();
-	}
-
-	@Override
 	public void insertar(Vehiculo vehiculo) throws OperationNotSupportedException {
 		if (vehiculo == null) {
 			throw new NullPointerException("ERROR: No se puede insertar un vehiculo nulo.");
@@ -62,6 +57,12 @@ public class Vehiculos implements IVehiculos {
 			throw new OperationNotSupportedException("ERROR: No existe ningún vehiculo con esa matrícula.");
 		}
 		coleccionVehiculos.remove(vehiculo);
+	}
+
+	public void comenzar() {
+	}
+
+	public void terminar() {
 	}
 
 }

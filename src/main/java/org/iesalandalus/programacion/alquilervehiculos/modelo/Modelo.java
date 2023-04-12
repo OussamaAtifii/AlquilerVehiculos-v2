@@ -1,9 +1,12 @@
 package org.iesalandalus.programacion.alquilervehiculos.modelo;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Alquiler;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
@@ -12,9 +15,7 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IAlquilere
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IClientes;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IFuenteDatos;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IVehiculos;
-import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.memoria.Alquileres;
-import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.memoria.Clientes;
-import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.memoria.Vehiculos;
+import org.xml.sax.SAXException;
 
 public abstract class Modelo {
 	protected IClientes clientes;
@@ -22,18 +23,40 @@ public abstract class Modelo {
 	protected IAlquileres alquileres;
 	protected IFuenteDatos fuenteDatos;
 
+	protected Modelo(FactoriaFuenteDatos factoriaFuenteDatos) {
+		if (factoriaFuenteDatos == null) {
+			throw new NullPointerException("ERROR: La fuente de datos no puede ser nula.");
+		}
+		factoriaFuenteDatos.crear();
+	}
+
+	protected IClientes getClientes() {
+		return clientes;
+	}
+
+	protected IVehiculos getVehiculos() {
+		return vehiculos;
+	}
+
+	protected IAlquileres getAlquileres() {
+		return alquileres;
+	}
+
 	protected void setFuenteDatos(IFuenteDatos fuenteDatos) {
 		this.fuenteDatos = fuenteDatos;
 	}
 
-	public void comenzar() {
-		clientes = new Clientes();
-		vehiculos = new Vehiculos();
-		alquileres = new Alquileres();
+	public void comenzar() throws OperationNotSupportedException, ParserConfigurationException, SAXException, IOException{
+		clientes.comenzar();
+		vehiculos.comenzar();
+		alquileres.comenzar();
 	}
 
-	public void terminar() {
-		System.out.println("El modelo a terminado con éxito.");
+	public void terminar() throws TransformerException, ParserConfigurationException, SAXException, IOException {
+		clientes.terminar();
+		vehiculos.terminar();
+		alquileres.terminar();
+		System.out.println("Modelo finalizado.");
 	}
 
 	public abstract void insertar(Cliente cliente) throws OperationNotSupportedException;
@@ -50,7 +73,9 @@ public abstract class Modelo {
 
 	public abstract void modificar(Cliente cliente, String nombre, String telefono) throws OperationNotSupportedException;
 
-	public abstract void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException;
+	public abstract void devolver(Cliente cliente, LocalDate fechaDevolucion) throws OperationNotSupportedException;
+
+	public abstract void devolver(Vehiculo vehiculo, LocalDate fechaDevolucion) throws OperationNotSupportedException;
 
 	public abstract void borrar(Cliente cliente) throws OperationNotSupportedException;
 
@@ -58,14 +83,14 @@ public abstract class Modelo {
 
 	public abstract void borrar(Alquiler alquiler) throws OperationNotSupportedException;
 
-	public abstract List<Cliente> getClientes();
+	public abstract List<Cliente> getListaClientes();
 
-	public abstract List<Vehiculo> getVehiculos();
+	public abstract List<Vehiculo> getListaVehiculos();
 
-	public abstract List<Alquiler> getAlquileres();
+	public abstract List<Alquiler> getListaAlquileres();
 
-	public abstract List<Alquiler> getAlquileres(Cliente cliente);
+	public abstract List<Alquiler> getListaAlquileres(Cliente cliente);
 
-	public abstract List<Alquiler> getAlquileres(Vehiculo vehiculo);
+	public abstract List<Alquiler> getListaAlquileres(Vehiculo vehiculo);
 
 }

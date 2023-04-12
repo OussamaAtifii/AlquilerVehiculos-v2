@@ -15,7 +15,6 @@ import org.iesalandalus.programacion.utilidades.Entrada;
 
 public class Consola {
 	private final static String PATRON_FECHA = "^([0-2][0-9]|3[0-1])(\\/)(0[1-9]|1[0-2])\\2(\\d{4})$";
-	private final static String PATRON_MES = "^[1-12]$";
 	private final static DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	private Consola() {
@@ -57,13 +56,13 @@ public class Consola {
 	}
 
 	public static LocalDate leerMes() {
+		int mes = leerEntero("Introduzca mes:");
 
-		String mes = "";
-		do {
-			leerCadena("Introduzca mes:");
-		} while (!mes.matches(PATRON_MES));
-		int mesNumerico = Integer.parseInt(mes);
-		return LocalDate.of(2023, mesNumerico, 1);
+		while (mes <= 0 || mes > 12) {
+			System.out.println("Mes no valido, vuelva a introducir un mes valido: ");
+			mes = Entrada.entero();
+		}
+		return LocalDate.of(2023, mes, 1);
 	}
 
 	private static LocalDate leerFecha(String mensaje) {
@@ -147,7 +146,7 @@ public class Consola {
 				tipoVehiculo = TipoVehiculo.get(ordinal);
 				comprobador = true;
 			} catch (Exception e) {
-				System.out.println("Vuelva a elejir un vehiculo correcto: ");
+				System.out.println("Vuelva a elegir un vehiculo correcto: ");
 				ordinal = Entrada.entero();
 			}
 		}
@@ -175,7 +174,7 @@ public class Consola {
 				matricula = leerCadena("Introduzca matricula del autobus: ");
 				plazas = leerEntero("Introduzca plazass del autobus: ");
 
-				new Autobus(marca, modelo, matricula, plazas);
+				vehiculo = new Autobus(marca, modelo, matricula, plazas);
 				break;
 
 			case FURGONETA:

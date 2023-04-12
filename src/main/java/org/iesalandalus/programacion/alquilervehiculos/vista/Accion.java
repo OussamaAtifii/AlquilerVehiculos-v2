@@ -1,13 +1,25 @@
 package org.iesalandalus.programacion.alquilervehiculos.vista;
 
 public enum Accion {
-	INSERTAR_CLIENTE("Insertar cliente"), INSERTAR_VEHICULO("Insertar vehiculo"),
-	INSERTAR_ALQUILER("Insertar alquiler"), BUSCAR_CLIENTE("Buscar cliente"), BUSCAR_VEHICULO("Buscar vehiculo"),
-	BUSCAR_ALQUILER("Buscar alquiler"), MODIFICAR_CLIENTE("Modificar cliente"), DEVOLVER_ALQUILER("Devolver alquiler"),
-	BORRAR_CLIENTE("Borrar cliente"), BORRAR_VEHICULO("Borrar vehiculo"), BORRAR_ALQUILER("Borrar alquiler"),
-	LISTAR_CLIENTES("Listar clientes"), LISTAR_VEHICULO("Listar vehiculos"), LISTAR_ALQUILERES("Listar alquileres"),
+	INSERTAR_CLIENTE("Insertar cliente"),
+	INSERTAR_VEHICULO("Insertar vehiculo"),
+	INSERTAR_ALQUILER("Insertar alquiler"),
+	BUSCAR_CLIENTE("Buscar cliente"),
+	BUSCAR_VEHICULO("Buscar vehiculo"),
+	BUSCAR_ALQUILER("Buscar alquiler"),
+	MODIFICAR_CLIENTE("Modificar cliente"),
+	BORRAR_CLIENTE("Borrar cliente"),
+	BORRAR_VEHICULO("Borrar vehiculo"),
+	BORRAR_ALQUILER("Borrar alquiler"),
+	LISTAR_CLIENTES("Listar clientes"),
+	LISTAR_VEHICULO("Listar vehiculos"),
+	LISTAR_ALQUILERES("Listar alquileres"),
 	LISTAR_ALQUILERES_CLIENTE("Listar alquileres de cliente"),
-	LISTAR_ALQUILERES_VEHICULO("Listar alquileres de vehiculo"), SALIR("Salir");
+	LISTAR_ALQUILERES_VEHICULO("Listar alquileres de vehiculo"),
+	DEVOLVER_ALQUILER_CLIENTE("Devolver alquiler de cliente"),
+	DEVOLVER_ALQUILER_VEHICULO("Devolver alquiler de vehiculo"),
+	MOSTRAR_ESTADISTICAS_MENSUALES("Mostrar estadisticas mensuales"),
+	SALIR("Salir");
 
 	String cadenaAMostrar;
 

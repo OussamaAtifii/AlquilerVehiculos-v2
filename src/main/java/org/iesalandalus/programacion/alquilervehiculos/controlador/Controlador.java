@@ -1,9 +1,12 @@
 package org.iesalandalus.programacion.alquilervehiculos.controlador;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.iesalandalus.programacion.alquilervehiculos.modelo.Modelo;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Alquiler;
@@ -11,12 +14,13 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.alquilervehiculos.vista.Vista;
 import org.iesalandalus.programacion.alquilervehiculos.vista.texto.VistaTexto;
+import org.xml.sax.SAXException;
 
-public class Controlador extends Vista{
+public class Controlador extends Vista {
     private Modelo modelo;
     private VistaTexto vista;
 
-	public Controlador(Modelo modelo, VistaTexto vista) {
+    public Controlador(Modelo modelo, VistaTexto vista) {
         if (modelo == null) {
             throw new NullPointerException("ERROR: El modelo no puede ser nulo.");
         }
@@ -28,13 +32,12 @@ public class Controlador extends Vista{
         vista.setControlador(this);
     }
 
-    public void comenzar() {
+    public void comenzar() throws OperationNotSupportedException, ParserConfigurationException, SAXException, IOException {
         modelo.comenzar();
         vista.comenzar();
     }
 
-    public void terminar() {
-        vista.terminar();
+    public void terminar() throws TransformerException, ParserConfigurationException, SAXException, IOException {
         modelo.terminar();
     }
 
@@ -66,8 +69,12 @@ public class Controlador extends Vista{
         modelo.modificar(cliente, nombre, telefono);
     }
 
-    public void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException {
-        modelo.devolver(alquiler, fechaDevolucion);
+    public void devolver(Cliente cliente, LocalDate fechaDevolucion) throws OperationNotSupportedException {
+        modelo.devolver(cliente, fechaDevolucion);
+    }
+
+    public void devolver(Vehiculo vehiculo, LocalDate fechaDevolucion) throws OperationNotSupportedException {
+        modelo.devolver(vehiculo, fechaDevolucion);
     }
 
     public void borrar(Cliente cliente) throws OperationNotSupportedException {
@@ -83,23 +90,23 @@ public class Controlador extends Vista{
     }
 
     public List<Cliente> getClientes() {
-        return modelo.getClientes();
+        return modelo.getListaClientes();
     }
 
     public List<Vehiculo> getVehiculos() {
-        return modelo.getVehiculos();
+        return modelo.getListaVehiculos();
     }
 
     public List<Alquiler> getAlquileres() {
-        return modelo.getAlquileres();
+        return modelo.getListaAlquileres();
     }
 
     public List<Alquiler> getAlquileres(Cliente cliente) {
-        return modelo.getAlquileres(cliente);
+        return modelo.getListaAlquileres(cliente);
     }
 
     public List<Alquiler> getAlquileres(Vehiculo Vehiculo) {
-        return modelo.getAlquileres(Vehiculo);
+        return modelo.getListaAlquileres(Vehiculo);
     }
 
 }

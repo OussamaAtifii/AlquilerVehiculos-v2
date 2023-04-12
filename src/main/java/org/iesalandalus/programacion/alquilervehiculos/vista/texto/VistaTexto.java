@@ -1,16 +1,26 @@
 package org.iesalandalus.programacion.alquilervehiculos.vista.texto;
 
+import java.io.IOException;
+import java.time.Month;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Alquiler;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Autobus;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Furgoneta;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.alquilervehiculos.vista.Accion;
 import org.iesalandalus.programacion.alquilervehiculos.vista.Consola;
 import org.iesalandalus.programacion.alquilervehiculos.vista.Vista;
+import org.xml.sax.SAXException;
 
 public class VistaTexto extends Vista {
 
@@ -26,10 +36,22 @@ public class VistaTexto extends Vista {
             accion = Consola.elegirAccion();
             ejecutar(accion);
         } while (accion != Accion.SALIR);
+
     }
 
     public void terminar() {
-        System.out.println("Vista finalizada");
+        System.out.println("Vista finalizada.");
+        try {
+            controlador.terminar();
+        } catch (ParserConfigurationException e) {
+            System.out.println("ERROR: Error en la construcción del lector.");;
+        } catch (SAXException e) {
+            System.out.println("ERROR: Error en la conversión del lector.");
+        } catch (IOException e) {
+            System.out.println("ERROR: Error en el acceso al fichero de origen.");
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void ejecutar(Accion accion) {
@@ -58,8 +80,11 @@ public class VistaTexto extends Vista {
             case MODIFICAR_CLIENTE:
                 modificarCliente();
                 break;
-            case DEVOLVER_ALQUILER:
-                devolverAlquiler();
+            case DEVOLVER_ALQUILER_CLIENTE:
+                devolverAlquilerCliente();
+                break;
+            case DEVOLVER_ALQUILER_VEHICULO:
+                devolverAlquilerVehiculo();
                 break;
             case BORRAR_CLIENTE:
                 borrarCliente();
@@ -85,6 +110,8 @@ public class VistaTexto extends Vista {
             case LISTAR_ALQUILERES_VEHICULO:
                 listarAlquileresVehiculo();
                 break;
+            case MOSTRAR_ESTADISTICAS_MENSUALES:
+                mostrarEstadisticasMensualesTipoVehiculos();
         }
     }
 
@@ -189,10 +216,10 @@ public class VistaTexto extends Vista {
         }
     }
 
-    protected void devolverAlquiler() {
-        Consola.mostrarCabecera("Devolver alquiler");
+    protected void devolverAlquilerCliente() {
+        Consola.mostrarCabecera("Devolver alquiler de cliente:");
         try {
-            controlador.devolver(Consola.leerAlquiler(), Consola.leerFechaDevolucion());
+            controlador.devolver(Consola.leerClienteDni(), Consola.leerFechaDevolucion());
             System.out.println("------------------------------------");
             System.out.println("✅ - Alquiler devuelto correctamente");
             System.out.println("------------------------------------\n");
@@ -201,6 +228,19 @@ public class VistaTexto extends Vista {
         }
     }
 
+    protected void devolverAlquilerVehiculo() {
+        Consola.mostrarCabecera("Devolver alquiler de cliente:");
+        try {
+            controlador.devolver(Consola.leerVehiculoMatricula(), Consola.leerFechaDevolucion());
+            System.out.println("------------------------------------");
+            System.out.println("✅ - Alquiler devuelto correctamente");
+            System.out.println("------------------------------------\n");
+        } catch (OperationNotSupportedException | NullPointerException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
     protected void borrarCliente() {
         Consola.mostrarCabecera("Borrar cliente");
         try {
@@ -208,7 +248,7 @@ public class VistaTexto extends Vista {
             System.out.println("----------------------------------");
             System.out.println("✅ - Cliente borrado correctamente");
             System.out.println("----------------------------------\n");
-        } catch (OperationNotSupportedException | NullPointerException e) {
+        } catch (OperationNotSupportedException | NullPointerException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -232,7 +272,7 @@ public class VistaTexto extends Vista {
             System.out.println("-----------------------------------");
             System.out.println("✅ - Alquiler borrado correctamente");
             System.out.println("-----------------------------------\n");
-        } catch (OperationNotSupportedException | NullPointerException e) {
+        } catch (OperationNotSupportedException | NullPointerException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -257,7 +297,7 @@ public class VistaTexto extends Vista {
             for (Cliente cliente : clientes) {
                 System.out.println(cliente);
             }
-            System.out.println("\n");
+            System.out.println();
         }
     }
 
@@ -281,7 +321,7 @@ public class VistaTexto extends Vista {
             for (Vehiculo vehiculo : vehiculos) {
                 System.out.println(vehiculo);
             }
-            System.out.println("\n");
+            System.out.println();
         }
     }
 
@@ -306,7 +346,7 @@ public class VistaTexto extends Vista {
             for (Alquiler alquiler : alquileres) {
                 System.out.println(alquiler);
             }
-            System.out.println("\n");
+            System.out.println();
         }
     }
 
@@ -317,18 +357,19 @@ public class VistaTexto extends Vista {
         try {
             alquileres = controlador.getAlquileres(Consola.leerClienteDni());
         } catch (NullPointerException | IllegalArgumentException e) {
+            System.out.println();
             System.out.println(e.getMessage());
         }
 
-        if (alquileres.size() == 0) {
-            System.out.println("-------------------------------------------------------");
-            System.out.println("❌ - No hay alquileres a nombre del cliente introducido");
-            System.out.println("-------------------------------------------------------\n");
-        } else {
+        if (alquileres != null && alquileres.size() >= 1) {
             for (Alquiler alquiler : alquileres) {
                 System.out.println(alquiler);
             }
-            System.out.println("\n");
+            System.out.println();
+        } else {
+            System.out.println("-------------------------------------------------------");
+            System.out.println("❌ - No hay alquileres a nombre del cliente introducido");
+            System.out.println("-------------------------------------------------------\n");
         }
     }
 
@@ -339,18 +380,60 @@ public class VistaTexto extends Vista {
         try {
             alquileres = controlador.getAlquileres(Consola.leerVehiculoMatricula());
         } catch (NullPointerException | IllegalArgumentException e) {
+            System.out.println();
             System.out.println(e.getMessage());
 		}
 
-        if (alquileres.size() == 0) {
-            System.out.println("---------------------------------------------------");
-            System.out.println("❌ - No hay alquileres para el vehiculo introducido");
-            System.out.println("---------------------------------------------------\n");
-        } else {
+        if (alquileres != null && alquileres.size() >= 1) {
             for (Alquiler alquiler : alquileres) {
                 System.out.println(alquiler);
             }
-            System.out.println("\n");
+            System.out.println();
+        } else {
+            System.out.println("---------------------------------------------------");
+            System.out.println("❌ - No hay alquileres para el vehiculo introducido");
+            System.out.println("---------------------------------------------------\n");
         }        
-	}
+    }
+
+    public void mostrarEstadisticasMensualesTipoVehiculos() {
+        Month mes = Consola.leerMes().getMonth();
+        Map<TipoVehiculo, Integer> mapaEstadisticas = inicializarEstadisticas();
+        TipoVehiculo[] tipoVehiculos = TipoVehiculo.values();
+
+        List<Alquiler> alquileres = controlador.getAlquileres();
+
+        for (Alquiler alquiler : alquileres) {
+            if (alquiler.getFechaAlquiler().getMonth() == mes) {
+                
+                if (alquiler.getVehiculo() instanceof Turismo) {
+                    mapaEstadisticas.put(TipoVehiculo.TURISMO, mapaEstadisticas.get(TipoVehiculo.TURISMO) + 1);
+                }
+                if (alquiler.getVehiculo() instanceof Furgoneta) {
+                    mapaEstadisticas.put(TipoVehiculo.FURGONETA, mapaEstadisticas.get(TipoVehiculo.FURGONETA) + 1);
+                }
+                if (alquiler.getVehiculo() instanceof Autobus) {
+                    mapaEstadisticas.put(TipoVehiculo.AUTOBUS, mapaEstadisticas.get(TipoVehiculo.AUTOBUS) + 1);
+                }    
+            }
+        }
+
+        for (TipoVehiculo tipoVehiculo : tipoVehiculos) {
+            System.out.println("Estadisticas de " + tipoVehiculo + ": " + mapaEstadisticas.get(tipoVehiculo) + " Alquileres");
+        }
+        System.out.println();
+    }
+
+    private Map<TipoVehiculo, Integer> inicializarEstadisticas() {
+		TipoVehiculo[] tipoVehiculos = TipoVehiculo.values();
+        EnumMap<TipoVehiculo, Integer> mapaEstadisticas = new EnumMap<>(TipoVehiculo.class);
+
+        for (TipoVehiculo tipoVehiculo : tipoVehiculos) {
+            mapaEstadisticas.put(tipoVehiculo, 0);
+        }
+        
+        return mapaEstadisticas;
+    }
+
 }
+

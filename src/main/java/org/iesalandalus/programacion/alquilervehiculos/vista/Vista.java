@@ -1,6 +1,13 @@
 package org.iesalandalus.programacion.alquilervehiculos.vista;
 
+import java.io.IOException;
+
+import javax.naming.OperationNotSupportedException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.iesalandalus.programacion.alquilervehiculos.controlador.Controlador;
+import org.xml.sax.SAXException;
 
 public abstract class Vista {
 	protected Controlador controlador;
@@ -12,8 +19,8 @@ public abstract class Vista {
 		this.controlador = controlador;
 	}
 
-	public abstract void comenzar();
+	public abstract void comenzar() throws OperationNotSupportedException, ParserConfigurationException, SAXException, IOException;
 
-	public abstract void terminar();
+	public abstract void terminar() throws TransformerException, ParserConfigurationException, SAXException, IOException;
 
 }

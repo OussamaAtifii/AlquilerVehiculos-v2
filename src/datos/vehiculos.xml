@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Vehiculos>
-    <Vehiculo Matricula="3333JJJ" Tipo="Autobus">
-        <Marca>Ford</Marca>
-        <Modelo>Mondeo</Modelo>
-        <Autobus>
-            <Plazas>24</Plazas>
-        </Autobus>
-    </Vehiculo>
+    
 </Vehiculos>

@@ -305,6 +305,4 @@ public class Alquileres implements IAlquileres {
 		}
 		coleccionAlquileres.remove(alquiler);
 	}
-
-
 }

@@ -268,5 +268,4 @@ public class Vehiculos implements IVehiculos {
 		}
 		coleccionVehiculos.remove(vehiculo);
 	}
-
 }

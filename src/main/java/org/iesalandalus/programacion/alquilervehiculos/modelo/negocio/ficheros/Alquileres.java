@@ -25,14 +25,14 @@ import org.xml.sax.SAXException;
 public class Alquileres implements IAlquileres {
 	private static List<Alquiler> coleccionAlquileres;
 	private static Alquileres instancia;
-	private String RUTA_FICHERO = "/home/oussama/Documentos/git/AlquilerVehiculos-v2/src/datos/alquileres.xml";
-	private DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	private String RAIZ = "Alquileres";
-	private String ALQUILER = "Alquiler";
-	private String DNI_CLIENTE = "Dni";
-	private String MATRICULA_VEHICULO = "Matricula";
-	private String FECHA_ALQUILER = "FechaAlquiler";
-	private String FECHA_DEVOLUCION = "FechaDevolucion";
+	private final String RUTA_FICHERO = "../AlquilerVehiculos-v2/src/datos/alquileres.xml";
+	private final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private final String RAIZ = "Alquileres";
+	private final String ALQUILER = "Alquiler";
+	private final String DNI_CLIENTE = "Dni";
+	private final String MATRICULA_VEHICULO = "Matricula";
+	private final String FECHA_ALQUILER = "FechaAlquiler";
+	private final String FECHA_DEVOLUCION = "FechaDevolucion";
 
 	private Alquileres() {
 		coleccionAlquileres = new ArrayList<>();
@@ -89,7 +89,7 @@ public class Alquileres implements IAlquileres {
 		Alquiler alquiler = new Alquiler(cliente, vehiculo, LocalDate.parse(fechaAlquiler, FORMATO_FECHA));
 
 		// Comprobar si el alquiler tiene fecha de devolución y devolverlo en caso de que si la tuviera:
-		if (fechaDevolucion != "") {
+		if (fechaDevolucion.equals("")) {
 			alquiler.devolver(LocalDate.parse(fechaDevolucion, FORMATO_FECHA));
 		}
 

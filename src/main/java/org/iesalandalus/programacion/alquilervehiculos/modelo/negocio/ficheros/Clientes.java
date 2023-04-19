@@ -20,12 +20,12 @@ import org.xml.sax.SAXException;
 public class Clientes implements IClientes {
 	private static List<Cliente> coleccionClientes;
 	private static Clientes instancia;
-	private String RUTA_FICHERO = "/home/oussama/Documentos/git/AlquilerVehiculos-v2/src/datos/clientes.xml";
-	private String TELEFONO = "Telefono";
-	private String CLIENTE = "Cliente";
-	private String NOMBRE = "Nombre";
-	private String RAIZ = "Clientes";
-	private String DNI = "Dni";
+	private final String RUTA_FICHERO = "../AlquilerVehiculos-v2/src/datos/clientes.xml";
+	private final String TELEFONO = "Telefono";
+	private final String CLIENTE = "Cliente";
+	private final String NOMBRE = "Nombre";
+	private final String RAIZ = "Clientes";
+	private final String DNI = "Dni";
 
 	private Clientes() {
 		coleccionClientes = new ArrayList<>();
@@ -86,8 +86,8 @@ public class Clientes implements IClientes {
 		Element raiz = documento.getDocumentElement();
 
 		// Iterar sobre la coleccion de clientes e ir transformando cada cliente a elemento:
-		for (int i = 0; i < coleccionClientes.size(); i++) {
-			raiz.appendChild(clienteToElement(documento, coleccionClientes.get(i)));
+		for (Cliente cliente : coleccionClientes) {
+			raiz.appendChild(clienteToElement(documento, cliente));
 		}
 
 		// Transformar el dom a xml:
@@ -147,8 +147,7 @@ public class Clientes implements IClientes {
 			throw new OperationNotSupportedException("ERROR: No existe ningún cliente con ese DNI.");
 		}
 
-		i = coleccionClientes.indexOf(cliente);
-		cliente = coleccionClientes.get(i);
+		cliente = buscar(cliente);
 
 		if (nombre != null && !nombre.isBlank()) {
 			cliente.setNombre(nombre);
@@ -180,9 +179,9 @@ public class Clientes implements IClientes {
 		}
 		if (!coleccionClientes.contains(cliente)) {
 			throw new OperationNotSupportedException("ERROR: No existe ningún cliente con ese DNI.");
-		} else {
-			coleccionClientes.remove(cliente);
 		}
+		
+		coleccionClientes.remove(cliente);
 	}
 
 }

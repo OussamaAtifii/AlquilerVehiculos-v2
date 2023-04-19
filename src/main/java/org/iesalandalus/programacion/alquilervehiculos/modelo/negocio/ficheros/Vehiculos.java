@@ -23,19 +23,19 @@ import org.xml.sax.SAXException;
 public class Vehiculos implements IVehiculos {
 	private List<Vehiculo> coleccionVehiculos;
 	private static Vehiculos instancia = null;
-	private String RUTA_FICHERO = "/home/oussama/Documentos/git/AlquilerVehiculos-v2/src/datos/vehiculos.xml";
-	private String RAIZ = "Vehiculos";
-	private String VEHICULO = "Vehiculo";
-	private String MARCA = "Marca";
-	private String MODELO = "Modelo";
-	private String MATRICULA = "Matricula";
-	private String CILINDRADA = "Cilindrada";
-	private String PLAZAS = "Plazas";
-	private String PMA = "Pma";
-	private String TIPO = "Tipo";
-	private String TURISMO = "Turismo";
-	private String AUTOBUS = "Autobus";
-	private String FURGONETA = "Furgoneta";
+	private final String RUTA_FICHERO = "../AlquilerVehiculos-v2/src/datos/vehiculos.xml";
+	private final String RAIZ = "Vehiculos";
+	private final String VEHICULO = "Vehiculo";
+	private final String MARCA = "Marca";
+	private final String MODELO = "Modelo";
+	private final String MATRICULA = "Matricula";
+	private final String CILINDRADA = "Cilindrada";
+	private final String PLAZAS = "Plazas";
+	private final String PMA = "Pma";
+	private final String TIPO = "Tipo";
+	private final String TURISMO = "Turismo";
+	private final String AUTOBUS = "Autobus";
+	private final String FURGONETA = "Furgoneta";
 
 	private Vehiculos() {
 		coleccionVehiculos = new ArrayList<>();
@@ -140,8 +140,8 @@ public class Vehiculos implements IVehiculos {
 		Element raiz = documento.getDocumentElement();
 
 		// Iterar sobre la coleccion de vehiculos e ir transformando cada vehiculo a elemento:
-		for (int i = 0; i < coleccionVehiculos.size(); i++) {
-			raiz.appendChild(vehiculoToElement(documento, coleccionVehiculos.get(i)));
+		for (Vehiculo coleccionVehiculo : coleccionVehiculos) {
+			raiz.appendChild(vehiculoToElement(documento, coleccionVehiculo));
 		}
 
 		// Transformar el dom a xml:

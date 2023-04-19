@@ -25,18 +25,17 @@ public abstract class Vehiculo {
 	}
 
 	public static Vehiculo copiar(Vehiculo vehiculo) {
-		Vehiculo vehiculoCopiar = null;
-
+		
 		if (vehiculo instanceof Turismo) {
-			vehiculoCopiar = new Turismo((Turismo) vehiculo);
+			vehiculo = new Turismo((Turismo) vehiculo);
 		}
 		if (vehiculo instanceof Autobus) {
-			vehiculoCopiar = new Autobus((Autobus) vehiculo);
+			vehiculo = new Autobus((Autobus) vehiculo);
 		}
 		if (vehiculo instanceof Furgoneta) {
-			vehiculoCopiar = new Furgoneta((Furgoneta) vehiculo);
+			vehiculo = new Furgoneta((Furgoneta) vehiculo);
 		}
-		return vehiculoCopiar;
+		return vehiculo;
 	}
 
 	protected abstract int getFactorPrecio();
